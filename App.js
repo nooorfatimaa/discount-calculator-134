@@ -9,6 +9,7 @@ export default function App() {
   const[saving, setSaving] = useState("");
   const[finalPrice, setFinal] = useState("");
   const[history, setHistory] = useState([""]);
+  const[screen, setScreen] = useState("main");
 
   const calculate = () => {
     let temp = 0;
@@ -28,17 +29,26 @@ export default function App() {
   const reset = () => {
     setPrice();
     setDiscount();
+    setSaving("");
+    setFinal("");
   }
 
   const save = () => {
     let array = history;
-    array.push(`Rs. ${ogPrice} -- ${discount}% -- Rs. ${finalPrice}-- Rs. ${saving}`);
+    array.push(`Rs. ${ogPrice} -- ${discount}% -- Rs. ${finalPrice}`);
+    setHistory(array);
     setPrice();
     setDiscount();
   }
 
+  const viewSwitch = () => {
+    if (screen === "history") {
+      return historyView;
+    }
+    return mainView;
+  }
 
-  return (
+  const mainView = (
     <View style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.hdr}>DISCOUNT APP</Text>
@@ -59,6 +69,7 @@ export default function App() {
         <Pressable onPress={() => calculate()} style={styles.btn}><Text>CALCULATE</Text></Pressable>
         <Pressable onPress={() => reset()} style={styles.btn}><Text>RESET</Text></Pressable>
         <Pressable onPress={() => save()} style={styles.btn}><Text>SAVE</Text></Pressable>
+        <Pressable onPress={() => setScreen("history")} style={styles.btn}><Text>HISTORY</Text></Pressable>
       </View>
       <View style={styles.box2}>
         <Text style={styles.txt2}>{saving}</Text>
@@ -66,6 +77,17 @@ export default function App() {
       </View>
     </View>
   );
+
+  const historyView = (
+    <View style={styles.container}>
+      <Text style={styles.hdr}>DISCOUNT APP HISTORY</Text>
+      <Text style={styles.txt}>-- Original Price -- Discount -- Final Price --</Text>
+      <Text>{history}</Text>
+      <Pressable onPress={() => setScreen("main")} style={styles.btn}><Text>BACK</Text></Pressable>
+    </View>
+  );
+
+  return <View style={styles.container}>{viewSwitch()}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -90,19 +112,19 @@ const styles = StyleSheet.create({
   },
   txt : {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: 'darkblue', 
-    fontFamily: 'monospace',
+    fontFamily: "monospace",
   },
   txt2 : {
     fontSize: 20,
     color: 'black', 
-    fontFamily: 'monospace',
+    fontFamily: "monospace",
   },
   txtInput: {
     width: 250,
     height: 70,
-    borderColor: 'coral',
+    borderColor: "coral",
     borderWidth: 1,
     margin: 24,
     fontSize: 18,
@@ -121,7 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'mediumpurple',
     borderWidth: 1,
     height: 40,
-    width: 150,
+    width: 180,
     marginBottom: 4,
   }
 });
