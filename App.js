@@ -1,5 +1,6 @@
-iimport React, {useState} from 'react';
+import React, {useState} from 'react';
 import { Text, View, StyleSheet, TextInput, Pressable, Alert } from 'react-native';
+
 
 
 export default function App() {
@@ -7,18 +8,19 @@ export default function App() {
   const[discount, setDiscount] = useState();
   const[saving, setSaving] = useState("");
   const[finalPrice, setFinal] = useState("");
+  const[history, setHistory] = useState([""]);
 
   const calculate = () => {
     let temp = 0;
     if (ogPrice >= 0 && discount <100 && discount >0) {
       temp = ((100-discount)/100)*ogPrice;
-      setFinal("Final price is " + temp);
-      setSaving("You save "+ (ogPrice-temp));
-      setPrice(0);
-      setDiscount(0);
+      setFinal(`Final price is Rs. ${temp}`);
+      setSaving(`You save Rs. ${(ogPrice-temp)}`);
+    }
+    else if (discount > 100) {
+      Alert.alert("Enter a number less than 100 for discount.");
     }
     else {
-      Alert.alert("Enter a number less than 100 for discount.");
       Alert.alert("Invalid input. Make sure you enter a positive number for both fields.");
     }
   }
@@ -29,6 +31,8 @@ export default function App() {
   }
 
   const save = () => {
+    let array = history;
+    array.push(`Rs. ${ogPrice} -- ${discount}% -- Rs. ${finalPrice}-- Rs. ${saving}`);
     setPrice();
     setDiscount();
   }
@@ -86,19 +90,19 @@ const styles = StyleSheet.create({
   },
   txt : {
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: 'darkblue', 
-    fontFamily: "monospace",
+    fontFamily: 'monospace',
   },
   txt2 : {
     fontSize: 20,
     color: 'black', 
-    fontFamily: "monospace",
+    fontFamily: 'monospace',
   },
   txtInput: {
     width: 250,
     height: 70,
-    borderColor: "coral",
+    borderColor: 'coral',
     borderWidth: 1,
     margin: 24,
     fontSize: 18,
@@ -108,13 +112,14 @@ const styles = StyleSheet.create({
   box2: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 250,
+    width: 300,
     height: 200,
   },
   btn: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'mediumpurple',
+    borderWidth: 1,
     height: 40,
     width: 150,
     marginBottom: 4,
