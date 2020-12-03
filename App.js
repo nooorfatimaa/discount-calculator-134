@@ -15,8 +15,9 @@ export default function App() {
     let temp = 0;
     if (ogPrice >= 0 && discount <100 && discount >0) {
       temp = ((100-discount)/100)*ogPrice;
+      temp = temp.toFixed(2);
       setFinal(`Final price is Rs. ${temp}`);
-      setSaving(`You save Rs. ${(ogPrice-temp)}`);
+      setSaving(`You save Rs. ${((ogPrice-temp).toFixed(2))}`);
     }
     else if (discount > 100) {
       Alert.alert("Enter a number less than 100 for discount.");
